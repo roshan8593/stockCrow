@@ -7,7 +7,7 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      "@landing": path.resolve(__dirname, "src/landingpage"),
+      "@landing": path.resolve(__dirname, "src/landingpage/products"),
       "@assets": path.resolve(__dirname, "src/assets")
     }
   }
