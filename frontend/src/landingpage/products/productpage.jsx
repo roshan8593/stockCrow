@@ -1,6 +1,6 @@
-import Leftsection from "@landing/Leftimage";
+import Leftsection from "@landing/LeftImage";
 import ProductHero from "@landing/productHero";
-import Rightsection from "@landing/Rightimage";
+import Rightsection from "@landing/RightImage";
 
 // Using aliases for assets
 import kitepng from '@assets/kite.png';
