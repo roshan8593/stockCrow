@@ -1,0 +1,12 @@
+.nav-buttonDiv{
+    
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.nav-buttonDiv button{
+   
+    width: 10%;
+    font-size: 1.4rem;
+}
