@@ -7,7 +7,7 @@ const Orders = () => {
   let[orders,setOrders]= useState([])
 
   useEffect(() => {
-    axios.get("http://localhost:3000/getorder")
+    axios.get("https://stockcrow-backend.onrender.com/getorder")
       .then((res) => {
         setOrders(res.data);
         console.log(res.data);
