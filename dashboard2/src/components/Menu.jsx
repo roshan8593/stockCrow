@@ -18,7 +18,7 @@ const Menu = () => {
   const handleLogout = async () => {
 
     try {
-      await axios.post("http://localhost:3000/signout", {}, {
+      await axios.post("https://stockcrow-backend.onrender.com/signout", {}, {
         withCredentials: true
       });
 
