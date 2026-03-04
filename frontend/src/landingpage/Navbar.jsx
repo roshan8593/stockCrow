@@ -14,10 +14,11 @@ import './navbar.css';
 function Navbar() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();   // ✅ Yaha hona chahiye
+  const navigate = useNavigate();  
+  const url= "https://stockcrow-backend.onrender.com/me";
 
   useEffect(() => {
-    axios.get("http://localhost:3000/me", {
+    axios.get(url, {
       withCredentials: true
     })
     .then(() => setIsLoggedIn(true))
@@ -25,12 +26,12 @@ function Navbar() {
   }, []);
 
   const handleLogout = async () => {
-    await axios.post("http://localhost:3000/signout", {}, {
+    await axios.post("https://stockcrow-backend.onrender.com/signout", {}, {
       withCredentials: true
     });
 
-    setIsLoggedIn(false);   // ✅ state update
-    navigate("/signup");   // ✅ redirect
+    setIsLoggedIn(false);  
+    navigate("/signup");   
   };
 
   return ( 
