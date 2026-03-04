@@ -13,7 +13,7 @@ function Signup() {
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/signup",
+        "https://stockcrow-backend.onrender.com/signup",
         { username, password },
         { withCredentials: true }
       );
