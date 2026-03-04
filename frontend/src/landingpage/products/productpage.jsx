@@ -5,7 +5,7 @@ import Rightsection from "@landing/RightImage";
 // Using aliases for assets
 import kitepng from '@assets/kite.png';
 import console from '@assets/console.png';
-import kiteConnect from '@assets/kiteConnect.png';
+import kiteconnect from '@assets/kiteconnect.png';
 import coin from '@assets/coin.png';
 import varsityimg from '@assets/varsity.png';
 
@@ -39,7 +39,7 @@ function Productpage() {
       />
 
       <Rightsection
-        imglink={kiteConnect}
+        imglink={kiteconnect}
         title={"Kite Connect API"}
         paragragh={
           "Build powerful trading platforms and experiences with our super simple HTTP/JSON APIs. If you are a startup, build your investment app and showcase it to our client base."
