@@ -14,7 +14,7 @@ const app = express();
 app.use(cookieParser());
 const port = process.env.PORT || 3000;
 app.use(cors({
-  origin: ["https://stockcrow-fronend-main-page1.onrender.com/","http://localhost:5174"],
+  origin: ["https://stockcrow-fronend-main-page1.onrender.com/","https://stockcrow.onrender.com"],
   credentials: true
 }));
 app.use(express.json());       
