@@ -22,16 +22,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
- origin: [
+ origin:[
    "https://stockcrow-fronend-main-page1.onrender.com",
    "https://stockcrow.onrender.com"
  ],
- credentials: true,
- methods: ["GET","POST","PUT","DELETE","OPTIONS"]
+ credentials:true
 }));
 
 /* ===============================
-   DATABASE CONNECTION
+   DATABASE
 ================================ */
 
 mongoose.connect(process.env.MONGO_URL)
@@ -56,13 +55,18 @@ const verifyUser = (req,res,next)=>{
      });
    }
 
-   jwt.verify(token, process.env.SECRET_KEY);
+   const decoded = jwt.verify(
+     token,
+     process.env.SECRET_KEY
+   );
+
+   req.user = decoded;
+
    next();
 
  }catch(err){
    return res.status(401).json({
-     success:false,
-     message:"Invalid token"
+     success:false
    });
  }
 };
@@ -72,14 +76,20 @@ const verifyUser = (req,res,next)=>{
 ================================ */
 
 app.post("/signup", async(req,res)=>{
+
  try{
 
    const { username, password } = req.body;
 
-   let userExist = await user.findOne({ username });
+   let existingUser = await user.findOne({username});
 
-   if(userExist){
-     const match = await bcrypt.compare(password, userExist.password);
+   /* LOGIN FLOW */
+   if(existingUser){
+
+     const match = await bcrypt.compare(
+       password,
+       existingUser.password
+     );
 
      if(!match){
        return res.status(400).json({
@@ -89,12 +99,12 @@ app.post("/signup", async(req,res)=>{
      }
 
      const token = jwt.sign(
-       { userid:userExist._id },
+       { userid:existingUser._id },
        process.env.SECRET_KEY,
        { expiresIn:"1h" }
      );
 
-     res.cookie("token", token,{
+     res.cookie("token",token,{
        httpOnly:true,
        secure:true,
        sameSite:"none",
@@ -107,8 +117,14 @@ app.post("/signup", async(req,res)=>{
      });
    }
 
+   /* SIGNUP FLOW */
+
    const salt = await bcrypt.genSalt(10);
-   const hashedPassword = await bcrypt.hash(password,salt);
+
+   const hashedPassword = await bcrypt.hash(
+     password,
+     salt
+   );
 
    const newUser = new user({
      username,
@@ -123,7 +139,7 @@ app.post("/signup", async(req,res)=>{
      { expiresIn:"1h" }
    );
 
-   res.cookie("token", token,{
+   res.cookie("token",token,{
      httpOnly:true,
      secure:true,
      sameSite:"none",
@@ -137,10 +153,10 @@ app.post("/signup", async(req,res)=>{
 
  }catch(err){
    res.status(500).json({
-     success:false,
-     message:"Server error"
+     success:false
    });
  }
+
 });
 
 /* ===============================
@@ -155,25 +171,26 @@ app.post("/signout",(req,res)=>{
    path:"/"
  });
 
- res.json({ success:true });
+ res.json({success:true});
 });
 
 /* ===============================
-   PROTECTED USER CHECK
+   PROTECTED USER
 ================================ */
 
 app.get("/me",verifyUser,(req,res)=>{
  res.json({
    success:true,
-   message:"Logged in"
+   userid:req.user.userid
  });
 });
 
 /* ===============================
-   ORDER ROUTES
+   ORDERS
 ================================ */
 
-app.post("/neworder", verifyUser, async(req,res)=>{
+app.post("/neworder",verifyUser, async(req,res)=>{
+
  try{
 
    const { name, qty, price, mode } = req.body;
@@ -182,14 +199,14 @@ app.post("/neworder", verifyUser, async(req,res)=>{
      name,
      qty,
      price,
-     mode
+     mode,
+     userId:req.user.userid
    });
 
    await newOrder.save();
 
    res.json({
-     success:true,
-     message:"Order placed"
+     success:true
    });
 
  }catch(err){
@@ -197,11 +214,19 @@ app.post("/neworder", verifyUser, async(req,res)=>{
      success:false
    });
  }
+
 });
 
-app.get("/getorder", verifyUser, async(req,res)=>{
- const orders = await order.find({});
+/* Get user specific orders */
+
+app.get("/getorder",verifyUser, async(req,res)=>{
+
+ const orders = await order.find({
+   userId:req.user.userid
+ });
+
  res.json(orders);
+
 });
 
 /* ===============================
@@ -219,7 +244,7 @@ app.get("/allpositions",async(req,res)=>{
 });
 
 /* ===============================
-   SERVER START
+   START SERVER
 ================================ */
 
 app.listen(port,()=>{
