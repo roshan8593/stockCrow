@@ -310,6 +310,29 @@ app.post('/signout', (req, res) => {
 
   res.json({ success: true });  
 });
+
+const verifyUser = (req,res,next)=>{
+  try{
+    const token = req.cookies.token;
+
+    if(!token){
+      return res.status(401).json({
+        success:false,
+        message:"Unauthorized"
+      });
+    }
+
+    jwt.verify(token, process.env.SECRET_KEY);
+
+    next();
+
+  }catch(err){
+    return res.status(401).json({
+      success:false,
+      message:"Invalid token"
+    });
+  }
+}
 app.get("/me", (req, res) => {
   const token = req.cookies.token;
 
