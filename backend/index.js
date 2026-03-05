@@ -20,11 +20,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
- origin:[
-   "https://stockcrow.onrender.com",
-   "https://stockcrow-mainlandingpage.onrender.com/"
- ],
- credentials:true
+ origin: "https://stockcrow.onrender.com",
+ credentials: true,
+ methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+ allowedHeaders: ["Content-Type","Authorization"]
 }));
 
 /* DB Connection */
