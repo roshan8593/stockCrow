@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors({
- origin: "https://stockcrow.onrender.com",
+ origin: ["https://stockcrow-fronend-main-page1.onrender.com","https://stockcrow.onrender.com"],
  credentials: true,
  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
  allowedHeaders: ["Content-Type","Authorization"]
