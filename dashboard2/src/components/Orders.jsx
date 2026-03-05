@@ -1,39 +1,61 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { useState,useEffect } from "react";
 
 const Orders = () => {
-  let[orders,setOrders]= useState([])
+
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    axios.get("https://stockcrow-backend.onrender.com/getorder")
-      .then((res) => {
-        setOrders(res.data);
-        console.log(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  },[])
+
+    axios.get(
+      "https://stockcrow-backend.onrender.com/getorder",
+      {
+        withCredentials: true
+      }
+    )
+    .then((res) => {
+      setOrders(res.data);
+      console.log(res.data);
+    })
+    .catch((err) => {
+      console.log(err.response?.data || err.message);
+    });
+
+  }, []);
+
   return (
     <div className="orders">
-      <div className="">
+      <div>
+
         <p>Your placed orders</p>
-        <ul>
-          <div>
-          {orders.map((order, index) => (
-            <div style={{display:"flex",justifyContent:"space-between"}}>
-            <p>{order.mode}</p> <p>{order.name}</p>  <p>₹{order.price}</p> <p>- Qty: {order.qty}</p> 
-         
-          </div>
-        ))}
-          </div>
-       
-        </ul>
-        <Link to={"/"} className="btn">
+
+        {orders.length === 0 ? (
+          <p>No orders found</p>
+        ) : (
+          <ul style={{ listStyle: "none", padding: 0 }}>
+            {orders.map((order, index) => (
+              <li
+                key={index}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "8px 0"
+                }}
+              >
+                <p>{order.mode}</p>
+                <p>{order.name}</p>
+                <p>₹{order.price}</p>
+                <p>Qty: {order.qty}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <Link to="/" className="btn">
           Get started
         </Link>
+
       </div>
     </div>
   );
