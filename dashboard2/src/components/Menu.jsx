@@ -23,7 +23,7 @@ const Menu = () => {
       });
 
       // Redirect to signup page (main frontend port)
-      window.location.href = "http://localhost:5173";
+      window.location.href = "https://stockcrow-fronend-main-page1.onrender.com";
 
     } catch (error) {
       console.error("Logout failed");
