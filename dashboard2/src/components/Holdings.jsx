@@ -7,7 +7,7 @@ const Holdings = () => {
   const [allHoldings, setAllHoldings] = useState([]);
 
   useEffect(() => {
-    axios.get("https://stockcrow-backend.onrender.com/allHoldings").then((res) => {
+    axios.get("https://stockcrow-backend.onrender.com/allholdings").then((res) => {
       setAllHoldings(res.data);
     });
   }, []);
