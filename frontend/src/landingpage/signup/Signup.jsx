@@ -19,7 +19,7 @@ function Signup() {
       );
 
       if (res.data.success) {
-        window.location.href = "http://localhost:5174";
+        window.location.href = "https://stockcrow.onrender.com/";
       }
 
     } catch (err) {
