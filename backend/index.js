@@ -14,7 +14,7 @@ import user from "./models/userModel.js";
 const app = express();
 
 /* Middleware */
-
+app.set("trust proxy",1);
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -34,9 +34,6 @@ mongoose.connect(process.env.MONGO_URL)
 
 const port = process.env.PORT || 3000;
 
-/* =========================
- SEED DATA (SAFE ⭐)
-========================= */
 
 app.get("/seed", async(req,res)=>{
 
@@ -100,7 +97,9 @@ app.post("/signup", async(req,res)=>{
 
      res.cookie("token",token,{
        httpOnly:true,
-       sameSite:"lax"
+      secure:true,
+       sameSite:"none",
+        path:"/"
      });
 
      return res.json({success:true});
